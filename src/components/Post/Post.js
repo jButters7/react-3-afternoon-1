@@ -54,8 +54,8 @@ export default class Post extends Component {
     // const editing = this.state.editing
     // const showMasterMenu = this.state.showMasterMenu
     const { editing, showMasterMenu } = this.state;
+    const { id, text, date, updatePostFn, deletePostFn } = this.props;
 
-    const { text, date } = this.props;
 
     return (
       // Main body of post
@@ -68,7 +68,7 @@ export default class Post extends Component {
           {/* Drop-down menu. Remember that the "showMasterMenu" variable has been destructured off of this.state */}
           <div className="Post__master-menu" style={{ display: showMasterMenu ? 'flex' : 'none' }}>
             <span onClick={this.showEdit}>Edit</span>
-            <span>Delete</span>
+            <span onClick={() => deletePostFn(id)}>Delete</span>
           </div>
         </div>
 
@@ -92,18 +92,20 @@ export default class Post extends Component {
                 <span ... ></span>
               }
         */}
+
         <div className="Post__content">
           {
             editing
               ?
-              <Edit text={text}
-                id={this.state.id}
-                hideEdit={this.hideEdit}
-                updatePostFn={this.state.updatePostFn} />
+              <Edit updatePostFn={updatePostFn}
+                id={id}
+                text={text}
+                hideEdit={this.hideEdit} />
               :
               <span className="Post__text">{text}</span>
           }
         </div>
+
 
         {/* These are all of the cute little icons in the bottom left corner */}
         <div className="Post__user-controls">

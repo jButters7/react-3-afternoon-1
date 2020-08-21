@@ -24,7 +24,7 @@ class App extends Component {
 
   componentDidMount() {
     axios.get(`${baseUrl}/posts`).then(res => {
-      // console.log(res.data)
+      console.log('mount is working')
       this.setState({
         posts: res.data
       });
@@ -32,17 +32,24 @@ class App extends Component {
   }
 
   updatePost(id, text) {
+    console.log('update is working')
     axios.put(`${baseUrl}/posts?id=${id}`, { text }).then(res => {
       this.setState({ posts: res.data })
     })
   }
 
-  deletePost() {
-
+  deletePost(id) {
+    console.log('delete is working')
+    axios.delete(`${baseUrl}/posts?id=${id}`).then(results => {
+      this.setState({ posts: results.data });
+    });
   }
 
-  createPost() {
-
+  createPost(text) {
+    console.log('create is working')
+    axios.post(`${baseUrl}/posts`, { text }).then(results => {
+      this.setState({ posts: results.data });
+    });
   }
 
   render() {
@@ -50,20 +57,23 @@ class App extends Component {
 
 
     return (
-      <div className="App__parent">
-        <Header />
+      <div className="App__parent" >
+        <Header data={this.state.post} />
 
         <section className="App__content">
 
-          <Compose />
-          {posts.map(post => (
-            // console.log(post)
-            < Post key={post.id}
-              text={post.text}
-              date={post.date}
-              id={post.id}
-              updatePostFn={this.updatePost} />
-          ))}
+          <Compose createPostFn={this.createPost} />
+          {
+            posts.map(post => (
+              // console.log(post)
+              < Post key={post.id}
+                text={post.text}
+                date={post.date}
+                id={post.id}
+                updatePostFn={this.updatePost}
+                deletePostFn={this.deletePost} />
+            ))
+          }
         </section>
       </div>
     );

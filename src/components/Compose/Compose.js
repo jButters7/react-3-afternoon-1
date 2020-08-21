@@ -3,25 +3,28 @@ import ProfileIcon from 'react-icons/lib/md/person-outline';
 
 import './Compose.css';
 
-//////////////////////////////////////////////////////// THIS COMPONENT IS BEING RENDERED IN THE *APP* COMPONENT
+// //////////////////////////////////////////////////////// THIS COMPONENT IS BEING RENDERED IN THE *APP* COMPONENT
 
 export default class Compose extends Component {
   constructor() {
     super();
-    
+
     this.state = {
       text: ''
     };
 
-    this.createPost = this.createPost.bind( this );
+    this.createPost = this.createPost.bind(this);
   }
 
-  updateText( text ) {
+  updateText(text) {
     this.setState({ text });
   }
 
   createPost() {
-
+    const { text } = this.state;
+    const { createPostFn } = this.props;
+    createPostFn(text);
+    this.setState({ text: '' });
   }
 
   render() {
@@ -38,14 +41,14 @@ export default class Compose extends Component {
 
           {/* This is where you type the message for your new post */}
           <input className="Compose__input"
-                 placeholder="What's on your mind?"
-                 value={ text }
-                 onChange={ ( e ) => this.updateText( e.target.value ) } />
+            placeholder="What's on your mind?"
+            value={text}
+            onChange={(e) => this.updateText(e.target.value)} />
 
         </div>
 
         <div className="Compose__bottom">
-          <button onClick={ this.createPost }>Compose</button>
+          <button onClick={this.createPost}>Compose</button>
         </div>
       </section>
     )
